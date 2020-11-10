@@ -15,6 +15,14 @@
 	|| BX_PLATFORM_WINDOWS                                \
 	) )
 
+#define BGFX_USE_SDL2 (BGFX_CONFIG_RENDERER_OPENGLES && (0 \
+	|| BX_PLATFORM_ANDROID                                \
+	|| BX_PLATFORM_BSD                                    \
+	|| BX_PLATFORM_LINUX                                  \
+	|| BX_PLATFORM_RPI                                    \
+	|| BX_PLATFORM_WINDOWS                                \
+	) )
+
 #define BGFX_USE_HTML5 (BGFX_CONFIG_RENDERER_OPENGLES && (0 \
 	|| BX_PLATFORM_EMSCRIPTEN                               \
 	) )
@@ -142,9 +150,13 @@ typedef uint64_t GLuint64;
 #		include "glcontext_egl.h"
 #	endif // BGFX_USE_EGL
 
+#	if BGFX_USE_SDL2
+#		include "glcontext_sdl2.h"
+#	endif // BGFX_USE_SDL2
+
 #	if BGFX_USE_HTML5
 #		include "glcontext_html5.h"
-#	endif // BGFX_USE_EGL
+#	endif // BGFX_USE_HTML5
 
 #endif // BGFX_CONFIG_RENDERER_OPENGL
 
