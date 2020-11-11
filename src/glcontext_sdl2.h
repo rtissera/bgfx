@@ -8,7 +8,7 @@
 
 #if BGFX_USE_SDL2
 
-#include <SDL2/sdl.h>
+#include <SDL2/SDL.h>
 
 #if defined(Success)
 // X11 defines Success
@@ -47,7 +47,7 @@ namespace bgfx { namespace gl
 
 		SwapChainGL* m_current;
 		SDL_GLContext m_context;
-		SDL_Window  m_window;
+		SDL_Window*  m_window;
 	};
 } /* namespace gl */ } // namespace bgfx
 

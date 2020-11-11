@@ -15,12 +15,13 @@
 	|| BX_PLATFORM_WINDOWS                                \
 	) )
 
+#if BGFX_USE_EGL && BGFX_CONFIG_SDL2
+#	undef BGFX_USE_EGL
+#	define BGFX_USE_EGL 0
+#endif
+
 #define BGFX_USE_SDL2 (BGFX_CONFIG_RENDERER_OPENGLES && (0 \
-	|| BX_PLATFORM_ANDROID                                \
-	|| BX_PLATFORM_BSD                                    \
-	|| BX_PLATFORM_LINUX                                  \
-	|| BX_PLATFORM_RPI                                    \
-	|| BX_PLATFORM_WINDOWS                                \
+	|| BGFX_CONFIG_SDL2                                \
 	) )
 
 #define BGFX_USE_HTML5 (BGFX_CONFIG_RENDERER_OPENGLES && (0 \

@@ -12,33 +12,18 @@
 
 namespace bgfx { namespace gl
 {
-	void* eglOpen()
-	{
-		return NULL;
-	}
-
-	void eglClose(void* /*_handle*/)
-	{
-	}
-
-#	define GL_IMPORT(_optional, _proto, _func, _import) _proto _func = NULL
-#	include "glimports.h"
-
-	static EGLint s_contextAttrs[16];
-
 	struct SwapChainGL
 	{
 		SwapChainGL(SDL_Window* _window, SDL_GLContext _context)
 			: m_window(_window)
 		{
             		//EGLSurface defaultSurface = eglGetCurrentSurface(EGL_DRAW);
-
 			//m_surface = eglCreateWindowSurface(m_display, _config, _nwh, NULL);
 			//BGFX_FATAL(m_surface != EGL_NO_SURFACE, Fatal::UnableToInitialize, "Failed to create surface.");
 
-			SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1)
+			SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
 			m_context = SDL_GL_CreateContext(m_window); //eglCreateContext(m_display, _config, _context, s_contextAttrs);
-			SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 0)
+			SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 0);
 			BX_ASSERT(NULL != m_context, "Create swap chain failed: %s", SDL_GetError() );
 
 			makeCurrent();
@@ -55,7 +40,7 @@ namespace bgfx { namespace gl
             		//EGLSurface defaultSurface = eglGetCurrentSurface(EGL_DRAW);
             		SDL_GLContext defaultContext = SDL_GL_GetCurrentContext(); //eglGetCurrentContext();
 			SDL_GL_MakeCurrent(m_window, 0); //EGL_NO_CONTEXT);
-			SDL_GL_DestroyContext(m_window, m_context);
+			SDL_GL_DeleteContext(m_context);
 			//eglDestroySurface(m_display, m_surface);
             		SDL_GL_MakeCurrent(m_window, defaultContext);
 		}
@@ -76,16 +61,15 @@ namespace bgfx { namespace gl
 
 	void GlContext::create(uint32_t _width, uint32_t _height)
 	{
-		m_eglLibrary = eglOpen();
-
 		if (NULL == g_platformData.context)
 		{
 			BX_UNUSED(_width, _height);
 			//EGLNativeWindowType  nwh = (EGLNativeWindowType )g_platformData.nwh;
 
 			m_window = SDL_GL_GetCurrentWindow();
-			BGFX_FATAL(m_window != NULL, Fatal::UnableToInitialize, "Failed to retrieve SDL/GL window");
+			BGFX_FATAL(m_window != NULL, Fatal::UnableToInitialize, "Failed to retrieve SDL2/GLES window");
 
+			int success = 0;
 			/*EGLint major = 0;
 			EGLint minor = 0;
 			EGLBoolean success = eglInitialize(m_display, &major, &minor);
@@ -108,7 +92,7 @@ namespace bgfx { namespace gl
 			// https://www.khronos.org/registry/EGL/extensions/ANDROID/EGL_ANDROID_recordable.txt
 			const bool hasEglAndroidRecordable = !bx::findIdentifierMatch(extensions, "EGL_ANDROID_recordable").isEmpty();*/
 
-			const uint32_t gles = BGFX_CONFIG_RENDERER_OPENGLES;
+			//const uint32_t gles = BGFX_CONFIG_RENDERER_OPENGLES;
 
 			// TODO Create SDL_GLContext
 
@@ -221,14 +205,11 @@ namespace bgfx { namespace gl
 		if (NULL != m_window)
 		{
 			SDL_GL_MakeCurrent(m_window, 0); //, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-			SDL_GL_DestroyContext(m_window, m_context);
+			SDL_GL_DeleteContext(m_context);
 			//eglDestroySurface(m_display, m_surface);
 			//eglTerminate(m_display);
 			m_context = NULL;
 		}
-
-		eglClose(m_eglLibrary);
-
 	}
 
 	void GlContext::resize(uint32_t _width, uint32_t _height, uint32_t _flags)
