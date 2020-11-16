@@ -5,6 +5,8 @@
 
 #include "entry_p.h"
 
+#if 0
+
 #if ENTRY_CONFIG_USE_NATIVE && (BX_PLATFORM_BSD || BX_PLATFORM_LINUX || BX_PLATFORM_RPI)
 
 #define XK_MISCELLANY
@@ -773,3 +775,4 @@ int main(int _argc, const char* const* _argv)
 }
 
 #endif // ENTRY_CONFIG_USE_NATIVE && (BX_PLATFORM_BSD || BX_PLATFORM_LINUX || BX_PLATFORM_RPI)
+#endif

@@ -78,6 +78,7 @@ namespace entry
 		SDL_VERSION(&wmi.version);
 		if (!SDL_GetWindowWMInfo(_window, &wmi) )
 		{
+			DBG("sdlSetWindow GetWMInfo failed");
 			return false;
 		}
 
@@ -492,9 +493,19 @@ namespace entry
 			m_mte.m_argc = _argc;
 			m_mte.m_argv = _argv;
 
-			SDL_Init(0
+			SDL_Init(SDL_INIT_VIDEO
 				| SDL_INIT_GAMECONTROLLER
 				);
+
+
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+			SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+			SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+			SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 			m_windowAlloc.alloc();
 			m_window[0] = SDL_CreateWindow("bgfx"
@@ -504,8 +515,13 @@ namespace entry
 							, m_height
 							, SDL_WINDOW_SHOWN
 							| SDL_WINDOW_RESIZABLE
+							| SDL_WINDOW_OPENGL
 							);
 
+			DBG("createWindow = 0x%8x", m_window[0]);
+
+			SDL_GLContext context = SDL_GL_CreateContext(m_window[0]);
+			
 			m_flags[0] = 0
 				| ENTRY_WINDOW_FLAG_ASPECT_RATIO
 				| ENTRY_WINDOW_FLAG_FRAME
@@ -871,6 +887,7 @@ namespace entry
 										, msg->m_height
 										, SDL_WINDOW_SHOWN
 										| SDL_WINDOW_RESIZABLE
+										| SDL_WINDOW_OPENGL
 										);
 
 									m_flags[handle.idx] = msg->m_flags;

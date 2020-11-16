@@ -56,14 +56,12 @@ project ("example-common")
 		path.join(BGFX_DIR, "examples/common/example-glue.cpp"),
 	}
 
-	if _OPTIONS["with-sdl"] then
 		defines {
 			"ENTRY_CONFIG_USE_SDL=1",
 		}
 		includedirs {
 			"$(SDL2_DIR)/include",
 		}
-	end
 
 	if _OPTIONS["with-glfw"] then
 		defines {

@@ -7103,11 +7103,11 @@ namespace bgfx { namespace gl
 		}
 		PrimInfo prim = s_primInfo[primIndex];
 
-		GL_CHECK(glPolygonMode(GL_FRONT_AND_BACK
+		/*GL_CHECK(glPolygonMode(GL_FRONT_AND_BACK
 			, _render->m_debug&BGFX_DEBUG_WIREFRAME
 			? GL_LINE
 			: GL_FILL
-			) );
+			) );*/
 
 		bool wasCompute = false;
 		bool viewHasScissor = false;

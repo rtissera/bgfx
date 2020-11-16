@@ -12,6 +12,12 @@
 
 namespace bgfx { namespace gl
 {
+
+#	define GL_IMPORT(_optional, _proto, _func, _import) _proto _func = NULL
+#	include "glimports.h"
+
+	//static EmscriptenWebGLContextAttributes s_attrs;
+
 	struct SwapChainGL
 	{
 		SwapChainGL(SDL_Window* _window, SDL_GLContext _context)
@@ -66,8 +72,11 @@ namespace bgfx { namespace gl
 			BX_UNUSED(_width, _height);
 			//EGLNativeWindowType  nwh = (EGLNativeWindowType )g_platformData.nwh;
 
+			m_context = SDL_GL_GetCurrentContext();
 			m_window = SDL_GL_GetCurrentWindow();
-			BGFX_FATAL(m_window != NULL, Fatal::UnableToInitialize, "Failed to retrieve SDL2/GLES window");
+			BX_TRACE("m_window=0x%8x", m_window);
+			BX_TRACE("m_context=0x%8x", m_context);
+			//BGFX_FATAL(m_window != NULL, Fatal::UnableToInitialize, "Failed to retrieve SDL2/GLES window");
 
 			int success = 0;
 			/*EGLint major = 0;
@@ -189,7 +198,10 @@ namespace bgfx { namespace gl
 			BGFX_FATAL(m_context != NULL, Fatal::UnableToInitialize, "Failed to create context.");
 
 			success = SDL_GL_MakeCurrent(m_window, m_context);
-			BGFX_FATAL(success, Fatal::UnableToInitialize, "Failed to set context.");
+			//if (success != 0)
+			//	BX_TRACE("cannot set sdl/gl context %s", SDL_GetError());
+			//else
+			//	BGFX_FATAL(success, Fatal::UnableToInitialize, "Failed to set context.");
 			m_current = NULL;
 
 			SDL_GL_SetSwapInterval(0);
@@ -294,7 +306,7 @@ namespace bgfx { namespace gl
 	{
 		BX_TRACE("Import:");
 
-#	if BX_PLATFORM_WINDOWS || BX_PLATFORM_LINUX
+/*#	if BX_PLATFORM_WINDOWS || BX_PLATFORM_LINUX
 		void* glesv2 = bx::dlopen("libGLESv2." BX_DL_EXT);
 
 #		define GL_EXTENSION(_optional, _proto, _func, _import)                           \
@@ -309,7 +321,7 @@ namespace bgfx { namespace gl
 						, #_import);                                                     \
 				}                                                                        \
 			}
-#	else
+#	else*/
 #		define GL_EXTENSION(_optional, _proto, _func, _import)                           \
 			{                                                                            \
 				if (NULL == _func)                                                       \
@@ -323,7 +335,7 @@ namespace bgfx { namespace gl
 				}                                                                        \
 			}
 
-#	endif // BX_PLATFORM_
+//#	endif // BX_PLATFORM_
 
 #	include "glimports.h"
 

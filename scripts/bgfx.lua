@@ -65,8 +65,9 @@ function bgfxProjectBase(_kind, _defines)
 				"-fPIC",
 			}
 			links {
-				"X11",
-				"GL",
+				"SDL2",
+				"EGL",
+				"GLESv2",
 				"pthread",
 			}
 

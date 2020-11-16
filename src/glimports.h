@@ -423,7 +423,6 @@ GL_IMPORT______(false, PFNGLVIEWPORTPROC,                          glViewport);
 GL_IMPORT______(false, PFNGLCLEARDEPTHPROC,                        glClearDepth);
 GL_IMPORT______(true,  PFNGLPOINTSIZEPROC,                         glPointSize);
 GL_IMPORT______(true,  PFNGLPOLYGONMODEPROC,                       glPolygonMode);
-
 GL_IMPORT_ARB__(true,  PFNGLDEBUGMESSAGECONTROLPROC,               glDebugMessageControl);
 GL_IMPORT_ARB__(true,  PFNGLDEBUGMESSAGEINSERTPROC,                glDebugMessageInsert);
 GL_IMPORT_ARB__(true,  PFNGLDEBUGMESSAGECALLBACKPROC,              glDebugMessageCallback);

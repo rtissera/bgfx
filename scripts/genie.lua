@@ -200,13 +200,11 @@ if _OPTIONS["with-wayland"] then
 	defines { "WL_EGL_PLATFORM=1" }
 end
 
-if _OPTIONS["with-sdl"] then
 	if os.is("windows") then
 		if not os.getenv("SDL2_DIR") then
 			print("Set SDL2_DIR enviroment variable.")
 		end
 	end
-end
 
 if _OPTIONS["with-profiler"] then
 	defines {
@@ -244,7 +242,6 @@ function exampleProjectDefaults()
 		usesWebGPU()
 	end
 
-	if _OPTIONS["with-sdl"] then
 		defines { "ENTRY_CONFIG_USE_SDL=1" }
 		links   { "SDL2" }
 
@@ -259,7 +256,6 @@ function exampleProjectDefaults()
 			libdirs { "$(SDL2_DIR)/lib" }
 
 		configuration {}
-	end
 
 	if _OPTIONS["with-glfw"] then
 		defines { "ENTRY_CONFIG_USE_GLFW=1" }
@@ -385,8 +381,9 @@ function exampleProjectDefaults()
 
 	configuration { "linux-* or freebsd" }
 		links {
-			"X11",
-			"GL",
+			"SDL2",
+			"EGL",
+			"GLESv2",
 			"pthread",
 		}
 
